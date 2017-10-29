@@ -64,7 +64,8 @@ void RC_Duty( float T , u16 tmp16_CH[CH_NUM] )
 	}else if(NS==3){
 	*( Mapped_CH + 0 ) = *( RX_CH + CH_in_Mapping[0] );
 	*( Mapped_CH + 1 ) = *( RX_CH + CH_in_Mapping[1] );
-	*( Mapped_CH + 2 ) = *( tmp16_CH + CH_in_Mapping[2] );
+	//*( Mapped_CH + 2 ) = *( tmp16_CH + CH_in_Mapping[2] );
+	*( Mapped_CH + 2 ) = *( RX_CH + CH_in_Mapping[2] );
 	*( Mapped_CH + 3 ) = *( RX_CH + CH_in_Mapping[3] );
 		
 		global_mode_NS = 1999;
