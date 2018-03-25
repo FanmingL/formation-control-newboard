@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <node pkg="formation_control" type="formation_control_node" name="formation_control" output="screen"/>
+  <node pkg="formation_trajectory" type="formation_trajectory_node" name="formation_trajectory" output="screen"/>
+</launch>
+

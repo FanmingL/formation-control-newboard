@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <param name="portNumber" value="0" type="int" />
+  <node pkg="uav_localization" type="uav_localization_node” name="uav_localization_node” respawn="true" ns="odroid1"/>
+  <node pkg="uav_driver_serial" type="uav_driver_serial_node” name="uav_driver_serial_node” ns="odroid1"/>
+  <node pkg="uav_proto_unpack" type="uav_proto_unpack_node” name="uav_proto_unpack_node” ns="odroid1"/>
+  <node pkg="uav_proto_pack" type="uav_proto_pack_node” name="uav_proto_pack_node” ns="odroid1"/>
+  <node pkg="uav_position_control" type="uav_position_control_node” name="uav_position_control_node” ns="odroid1"/>
+</launch>
+
