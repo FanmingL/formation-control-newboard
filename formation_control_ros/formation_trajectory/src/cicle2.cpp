@@ -5,10 +5,13 @@
 #include "traj.h"
 using namespace std;
 
-/* notes
-所有输入输出单位均是以“MM”为基础
-如长度为MM，速度为MM/s
-*/
+/*
+ * 功能：编队支持函数
+ * 日期：18/3/24
+ * 作者：ycnalin
+ * 所有输入输出单位均是以“MM”为基础
+ * 如长度为MM，速度为MM/s
+ */
 static float position_x[25], position_y[25];
 static int16_t fill_cnt_x, fill_cnt_y;
 static float vec = 0.0f;
