@@ -7,19 +7,21 @@
 
 #include<iostream>
 #include"ros/ros.h"
-#include "uav_msgs/uav_position.h"
+#include "april_pro/camera_pos.h"
 #include "std_msgs/Empty.h"
 #include "traj.h"
-#define int16_t short
+#include <fstream>
 
+#define int16_t short
+int debug_flag_ = 1;
 ros::Time old1, old2;
-uav_msgs::uav_position pos_get1, pos_get2, pos_out1, pos_out2;
+april_pro::camera_pos pos_get1, pos_get2, pos_out1, pos_out2;
 bool fresh_flag1=false, fresh_flag2=false;
 ros::Publisher path1,path2,alllock,alllandon;
 Target_t target_out1, target_out2;
 Pos_t stable1,stable2;
 std_msgs::Empty empty;
-void position1_handle(const uav_msgs::uav_position &msg)
+void position1_handle(const april_pro::camera_pos &msg)
 {
     float interval = (msg.header.stamp-old1).toSec();
     if (interval>1.0f){
@@ -32,7 +34,7 @@ void position1_handle(const uav_msgs::uav_position &msg)
     target_out1 = trajectory_generate1(interval,10*pos_get1.x,10*pos_get1.y,pos_get1.yaw,stable1);
 }
 
-void position2_handle(const uav_msgs::uav_position &msg)
+void position2_handle(const april_pro::camera_pos &msg)
 {
     float interval = (msg.header.stamp-old2).toSec();
     if (interval>1.0f){
@@ -51,21 +53,31 @@ int main(int argc, char **argv){
 	ros::NodeHandle n;
 	old1 = ros::Time::now();
     old2 = ros::Time::now();
-	path1 = n.advertise<uav_msgs::uav_position>("/odroid1/target",1000);
-    path2 = n.advertise<uav_msgs::uav_position>("/odroid2/target",1000);
+	path1 = n.advertise<april_pro::camera_pos>("/odroid1/target",1000);
+    path2 = n.advertise<april_pro::camera_pos>("/odroid2/target",1000);
     alllock   =    n.advertise<std_msgs::Empty>("/alllock",1);
     alllandon =    n.advertise<std_msgs::Empty>("/alllandon",1);
 	ros::Subscriber sub1 = n.subscribe("/odroid1/position",1,&position1_handle);
 	ros::Subscriber sub2 = n.subscribe("/odroid2/position",1,&position2_handle);
     static int tick=0;
     ros::Rate loop_rate(100);
+    std::ofstream outfile;
+    std::string data_path_out = "trajectory_real";
+    data_path_out  += ".csv";
+    outfile.open(data_path_out.c_str());
+    if(!outfile) std::cout<<"error"<<std::endl;
     while (ros::ok())
     {
         ros::spinOnce();
         if (fresh_flag1&&fresh_flag2)
         {
-            
-            int error_status = getFormationTarget(stable1, stable2, &target_out1, &target_out2);
+                       int error_status = getFormationTarget(stable1, stable2, &target_out1, &target_out2);
+             if (debug_flag_)
+	    {
+            outfile<<pos_get1.x<<","<<pos_get1.y<<","
+                   <<pos_get2.x<<","<<pos_get2.y<<"\n";
+            } 
+
  	tick++;
 	if (tick < 20)
 	{
@@ -116,7 +128,7 @@ int main(int argc, char **argv){
         }
         loop_rate.sleep();
     }
-
+    outfile.close();
 
 
 	return 0;
