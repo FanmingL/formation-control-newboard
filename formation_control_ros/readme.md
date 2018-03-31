@@ -29,7 +29,7 @@ cd ../libcam
 make
 sudo make install
 ```
-### Install Thirdparty Library
+### Install The ROS package
 Please copy the ros package to your workspace and use `catkin_make` to compile
 
 ### Function of every node
