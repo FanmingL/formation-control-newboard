@@ -75,7 +75,9 @@ int main(int argc, char **argv){
              if (debug_flag_)
 	    {
             outfile<<pos_get1.x<<","<<pos_get1.y<<","
-                   <<pos_get2.x<<","<<pos_get2.y<<"\n";
+                   <<pos_get2.x<<","<<pos_get2.y<<","
+                   <<target_out1.x1<<","<<target_out1.y1<<","
+                   <<target_out2.x1<<","<<target_out2.y1<<"\n";
             } 
 
  	tick++;
